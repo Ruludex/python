@@ -17,4 +17,17 @@
 
 <hr>
 <h3>Últimas Publicaciones</h3>
+
+<!-- El bucle que recorre la base de datos y muestra los posts -->
+{% for post in posts %}
+    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
+        <h4>{{ post.titulo }}</h4>
+        <small>Publicado el: {{ post.fecha_publicacion|date:"d/m/Y H:i" }}</small>
+        <p>{{ post.contenido }}</p>
+    </div>
+{% empty %}
+    <p>Todavía no hay ninguna publicación armada. ¡Entrá al admin y creá la primera!</p>
+{% endfor %}
+
+<hr>
 <p>© 2026 - Mi Blog de Python</p>
