@@ -2,19 +2,132 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Iniciar Sesión - Mi Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - El Blog de Gastón</title>
+    <style>
+        /* Estilos Base en sintonía con el inicio */
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 450px;
+            margin: 80px auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+
+        /* Contenedor de la tarjeta de Login */
+        .login-container {
+            background: #ffffff;
+            border: 1px solid #dee2e6;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            margin-top: 0;
+            color: #212529;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+            font-size: 1.6rem;
+            text-align: center;
+        }
+
+        /* Formateo de los campos automáticos de Django */
+        form p {
+            margin-bottom: 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        form label {
+            font-weight: 500;
+            margin-bottom: 6px;
+            color: #495057;
+            font-size: 0.95rem;
+        }
+
+        form input {
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        }
+
+        form input:focus {
+            outline: none;
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 3px rgba(13,110,253,0.25);
+        }
+
+        /* El botón azul de Bootstrap */
+        .btn-login {
+            display: inline-block;
+            width: 100%;
+            padding: 12px;
+            background-color: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            background-color: #0b5ed7;
+        }
+
+        /* Links de navegación inferior */
+        .links {
+            margin-top: 25px;
+            font-size: 0.9rem;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+            padding-top: 15px;
+        }
+
+        .links a {
+            color: #0d6efd;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }
+
+        /* Texto de ayuda menor que a veces renderiza Django */
+        .helptext {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 4px;
+        }
+    </style>
 </head>
 <body>
+
+<div class="login-container">
     <h2>Iniciar Sesión</h2>
     
     <form method="post">
-        <!-- Token de seguridad obligatorio para formularios en Django -->
         {% csrf_token %}
         
-        <!-- Aquí Django genera los campos de Usuario y Contraseña automáticamente -->
         {{ form.as_p }}
         
-        <button type="submit">Ingresar</button>
+        <button type="submit" class="btn-login">Ingresar</button>
     </form>
+
+    <div class="links">
+        <a href="{% url 'registro' %}">¿No tenés cuenta? Registrate acá</a>
+        <br><br>
+        <a href="{% url 'inicio' %}">← Volver al Inicio</a>
+    </div>
+</div>
+
 </body>
 </html>
