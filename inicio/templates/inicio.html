@@ -1,33 +1,161 @@
-📝 El Blog de Gastón <br>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Blog de Gastón</title>
+    <style>
+        /* Estilos Base */
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
 
-<!-- Evaluamos si el usuario inició sesión -->
-{% if user.is_authenticated %}
-    <span>Hola, <strong>{{ user.username }}</strong>! | </span>
-    <a href="{% url 'admin:index' %}">Panel de Control (Admin)</a> | 
-    
-    <!-- Formulario seguro para cerrar sesión -->
-    <form action="{% url 'logout' %}" method="post" style="display:inline;">
-        {% csrf_token %}
-        <button type="submit" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer; padding:0;">Cerrar Sesión</button>
-    </form>
-{% else %}
-    <!-- Si no está logueado, le mostramos el link para ir al Login -->
-    <a href="{% url 'login' %}">Iniciar Sesión</a>
-{% endif %}
+        /* Barra de Navegación / Encabezado */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e9ecef;
+            margin-bottom: 30px;
+        }
 
-<hr>
-<h3>Últimas Publicaciones</h3>
+        h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            color: #212529;
+        }
 
-<!-- El bucle que recorre la base de datos y muestra los posts -->
-{% for post in posts %}
-    <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 5px;">
-        <h4>{{ post.titulo }}</h4>
-        <small>Publicado el: {{ post.fecha_publicacion|date:"d/m/Y H:i" }}</small>
-        <p>{{ post.contenido }}</p>
-    </div>
-{% empty %}
-    <p>Todavía no hay ninguna publicación armada. ¡Entrá al admin y creá la primera!</p>
-{% endfor %}
+        .user-menu {
+            font-size: 0.95rem;
+        }
 
-<hr>
-<p>© 2026 - Mi Blog de Python</p>
+        .user-menu a, .logout-btn {
+            color: #0d6efd;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .user-menu a:hover, .logout-btn:hover {
+            text-decoration: underline;
+        }
+
+        .logout-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            font-family: inherit;
+            font-size: inherit;
+        }
+
+        /* Sección de Publicaciones */
+        .section-title {
+            font-size: 1.4rem;
+            color: #495057;
+            margin-bottom: 20px;
+        }
+
+        /* Tarjetas de los Posts */
+        .post-card {
+            background: #ffffff;
+            border: 1px solid #dee2e6;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .post-card h4 {
+            margin: 0 0 8px 0;
+            font-size: 1.3rem;
+            color: #212529;
+        }
+
+        .post-meta {
+            display: block;
+            color: #6c757d;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+        }
+
+        .post-content {
+            margin: 0;
+            color: #495057;
+            white-space: pre-line; /* Mantiene los saltos de línea del contenido */
+        }
+
+        .empty-message {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            color: #495057;
+        }
+
+        /* Pie de página */
+        footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>📝 El Blog de Gastón</h1>
+        
+        <div class="user-menu">
+            {% if user.is_authenticated %}
+                <span>Hola, <strong>{{ user.username }}</strong>!</span> | 
+                <a href="{% url 'admin:index' %}">Panel de Control</a> | 
+                
+                <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-btn">Cerrar Sesión</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Iniciar Sesión</a>
+                <a href="{% url 'registro' %}">Crear una Cuenta</a>  <!-- 👈 AGREGÁ ESTA LÍNEA ACÁ -->
+            {% endif %}
+        </div>
+    </header>
+
+    <main>
+        <h2 class="section-title">Últimas Publicaciones</h2>
+
+        {% for post in posts %}
+            <article class="post-card">
+                <h4>{{ post.titulo }}</h4>
+                <time class="post-meta">Publicado el: {{ post.fecha_publicacion|date:"d/m/Y H:i" }}</time>
+                <p class="post-content">{{ post.contenido }}</p>
+            </article>
+        {% empty %}
+            <div class="empty-message">
+                <p>Todavía no hay ninguna publicación armada. ¡Entrá al admin y creá la primera!</p>
+            </div>
+        {% endfor %}
+    </main>
+
+    <footer>
+        <p>© 2026 - Mi Blog de Python</p>
+    </footer>
+
+</body>
+</html>

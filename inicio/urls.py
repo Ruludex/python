@@ -1,8 +1,7 @@
 from django.urls import path
-from inicio.views import inicio 
-
-app_name = 'inicio'
+from . import views
 
 urlpatterns = [
-    path ('', inicio, name='inicio')
+    path('', views.inicio, name='inicio'), # 👈 Asegurate de que esta coma esté acá
+    path('registro/', views.registro, name='registro'), # 👈 Y esta también
 ]
