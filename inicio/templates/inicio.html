@@ -16,19 +16,6 @@
 
     <h3>Últimas Publicaciones</h3>
 
-    {% if posts %}
-        {% for post in posts %}
-            <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 5px;">
-                <h4>{{ post.titulo }}</h4>
-                <h5>{{ post.subtitulo }}</h5>
-                <p>{{ post.cuerpo }}</p>
-                <small>📅 Publicado el: {{ post.fecha_publicacion }}</small>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No hay posts en la base de datos todavía. Entrá al Panel de Control arriba para cargar el primero.</p>
-    {% endif %}
-
     <hr>
     <footer>
         <p>© 2026 - Mi Blog de Python</p>
