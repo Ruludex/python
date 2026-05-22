@@ -78,8 +78,16 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
 
+        /* 💡 Nuevo contenedor para alinear la foto del admin con el título del post */
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+
         .post-card h4 {
-            margin: 0 0 8px 0;
+            margin: 0;
             font-size: 1.3rem;
             color: #212529;
         }
@@ -124,7 +132,6 @@
             margin-bottom: 10px;
             border-radius: 6px;
             border-left: 3px solid #0d6efd;
-            /* 💡 Sumamos Flexbox para alinear la foto a la izquierda del texto */
             display: flex;
             align-items: flex-start;
             gap: 12px;
@@ -211,8 +218,26 @@
 
         {% for post in posts %}
             <article class="post-card">
-                <h4>{{ post.titulo }}</h4>
-                <time class="post-meta">Publicado el: {{ post.fecha_publicacion|date:"d/m/Y H:i" }}</time>
+                
+                <div class="post-header">
+                    {% if post.autor.perfil and post.autor.perfil.foto %}
+                        <img src="{{ post.autor.perfil.foto.url }}" alt="Foto de {{ post.autor.username }}" 
+                             style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #0d6efd; flex-shrink: 0;">
+                    {% elif user.is_authenticated and user.perfil and user.perfil.foto %}
+                        <img src="{{ user.perfil.foto.url }}" alt="Foto de {{ user.username }}" 
+                             style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid #0d6efd; flex-shrink: 0;">
+                    {% else %}
+                        <div style="width: 45px; height: 45px; background: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0;">
+                            👤
+                        </div>
+                    {% endif %}
+                    
+                    <div>
+                        <h4>{{ post.titulo }}</h4>
+                        <time class="post-meta">Por: <strong>{{ post.autor.username|default:user.username }}</strong> • Publicado el: {{ post.fecha_publicacion|date:"d/m/Y H:i" }}</time>
+                    </div>
+                </div>
+
                 <p class="post-content">{{ post.contenido }}</p>
 
                 <div class="comments-section">
@@ -269,7 +294,7 @@
     </main>
 
     <footer>
-        <p>© 2026 - Mi Blog de Python</p>
+        <p>© 2026 - Mi Blog de Python | Creado por <strong>Gastón (Admin)</strong></p>
     </footer>
 
 </body>

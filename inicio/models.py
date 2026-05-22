@@ -1,15 +1,19 @@
 from django.db import models
-from django.contrib.auth.models import User # 👈 Importamos el modelo de usuarios nativo de Django
+from django.contrib.auth.models import User # Importamos el modelo de usuarios nativo de Django
 
 class Post(models.Model):
     titulo = models.CharField(max_length=100)
     contenido = models.TextField()
     fecha_publicacion = models.DateTimeField(auto_now_add=True)
+    
+    # 💡 CORREGIDO: Ahora cada Post tiene un autor vinculado a la base de datos
+    # Usamos null=True y blank=True por si tenés posts viejos creados sin autor, así no se te rompe la BD.
+    autor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posts', null=True, blank=True)
 
     def __str__(self):
-        return self.titulo
+        # Mostramos también el autor en el panel de administración para que sea más claro
+        return f"'{self.titulo}' por {self.autor.username if self.autor else 'Anónimo'}"
 
-# 🔽 AGREGAMOS ESTO ABAJO DE TU POST 🔽
 
 class Comentario(models.Model):
     # Relaciona el comentario con tu modelo Post. 
@@ -24,7 +28,7 @@ class Comentario(models.Model):
 
     def __str__(self):
         return f"Comentario de {self.autor.username} en '{self.post.titulo}'"
-# ... (Dejá tus modelos Post y Comentario intactos arriba) ...
+
 
 class Perfil(models.Model):
     # Relación 1 a 1: un usuario tiene un perfil, un perfil pertenece a un usuario
@@ -42,6 +46,7 @@ class Perfil(models.Model):
 
     def __str__(self):
         return f"Perfil de {self.user.username}"
+
 
 # ⚡ TRUCO MÁGICO: Crear el perfil automáticamente al registrarse
 from django.db.models.signals import post_save
