@@ -19,5 +19,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',include('inicio.urls'))
+    path('', include('inicio.urls')),
+    
+    # Agregamos esta línea para el Login/Logout automático de Django
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

@@ -1,25 +1,20 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Mi Proyecto Django</title>
-</head>
-<body>
+📝 El Blog de Gastón <br>
 
-    <nav>
-        <h2>📝 El Blog de Gastón</h2>
-        <a href="/">Inicio</a> | 
-        <a href="/admin" target="_blank">Panel de Control (Admin)</a>
-    </nav>
+<!-- Evaluamos si el usuario inició sesión -->
+{% if user.is_authenticated %}
+    <span>Hola, <strong>{{ user.username }}</strong>! | </span>
+    <a href="{% url 'admin:index' %}">Panel de Control (Admin)</a> | 
     
-    <hr>
+    <!-- Formulario seguro para cerrar sesión -->
+    <form action="{% url 'logout' %}" method="post" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" style="background:none; border:none; color:blue; text-decoration:underline; cursor:pointer; padding:0;">Cerrar Sesión</button>
+    </form>
+{% else %}
+    <!-- Si no está logueado, le mostramos el link para ir al Login -->
+    <a href="{% url 'login' %}">Iniciar Sesión</a>
+{% endif %}
 
-    <h3>Últimas Publicaciones</h3>
-
-    <hr>
-    <footer>
-        <p>© 2026 - Mi Blog de Python</p>
-    </footer>
-
-</body>
-</html>
+<hr>
+<h3>Últimas Publicaciones</h3>
+<p>© 2026 - Mi Blog de Python</p>
