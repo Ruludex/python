@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f8f9fa;
+        }
+        .form-card {
+            background: #ffffff;
+            border: 1px solid #dee2e6;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+        h2 { margin: 0 0 20px 0; color: #212529; text-align: center; }
+        .form-group { margin-bottom: 20px; }
+        .btn-save {
+            width: 100%;
+            padding: 10px;
+            background-color: #198754;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        .btn-save:hover { background-color: #157347; }
+        .btn-cancel {
+            display: block;
+            text-align: center;
+            padding: 10px;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        .btn-cancel:hover { background-color: #5a6268; }
+    </style>
+</head>
+<body>
+
+    <div class="form-card">
+        <h2>Actualizar Mi Perfil</h2>
+        
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            
+            <button type="submit" class="btn-save">Guardar Cambios</button>
+            <a href="{% url 'ver_perfil' %}" class="btn-cancel">Cancelar</a>
+        </form>
+    </div>
+
+</body>
+</html>

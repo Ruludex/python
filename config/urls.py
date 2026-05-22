@@ -16,11 +16,18 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from inicio import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('inicio.urls')),
-    
-    # Agregamos esta línea para el Login/Logout automático de Django
+    path('', views.inicio, name='inicio'),
+    path('registro/', views.registro, name='registro'),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('', include('inicio.urls')),  # <-- Esta línea conecta tu app con el servidor principal
 ]
+
+# 👈 ESTO SUMA EL SOPORTE PARA MOSTRAR LAS FOTOS EN DESARROLLO
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

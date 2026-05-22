@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
-from .models import Post, Comentario  # 👈 Sumamos 'Comentario'
-from .forms import ComentarioForm      # 👈 Sumamos el formulario de comentarios
+from django.contrib.auth.decorators import login_required # Para proteger el perfil
+from .models import Post, Comentario, Perfil  # Asegurate de importar tu modelo Perfil aquí
+from .forms import ComentarioForm, PerfilForm  # Sumamos PerfilForm aquí
 
 def inicio(request):
     # 1. Si un usuario envía un comentario (petición POST)
@@ -35,3 +36,40 @@ def registro(request):
         form = UserCreationForm()
     
     return render(request, 'registration/registro.html', {'form': form})
+
+# ==========================================
+# VISTAS PARA EL PERFIL DE USUARIO
+# ==========================================
+
+@login_required # Si no está logueado, Django lo rebota al login automáticamente
+def ver_perfil(request):
+    try:
+        # Intentamos obtener el perfil del usuario actual
+        perfil = request.user.perfil
+    except Perfil.DoesNotExist:
+        # Si el usuario no lo tiene creado en la BD, se lo creamos en el acto
+        perfil = Perfil.objects.create(user=request.user)
+        
+    # Pasamos el perfil seguro a la plantilla
+    return render(request, 'perfil.html', {'perfil': perfil})
+
+@login_required
+def editar_perfil(request):
+    try:
+        # Validamos también acá que el perfil exista antes de intentar editarlo
+        perfil = request.user.perfil
+    except Perfil.DoesNotExist:
+        perfil = Perfil.objects.create(user=request.user)
+    
+    if request.method == 'POST':
+        # request.FILES es obligatorio acá para recibir la imagen de la foto
+        form = PerfilForm(request.POST, request.FILES, instance=perfil)
+        if form.is_valid():
+            form.save()
+            # 💡 CORREGIDO: Redireccionamos a 'ver_perfil' que es el nombre real en tu urls.py
+            return redirect('ver_perfil') 
+    else:
+        # Si entra de forma normal, carga el formulario con los datos que ya tenía guardados
+        form = PerfilForm(instance=perfil)
+        
+    return render(request, 'editar_perfil.html', {'form': form})

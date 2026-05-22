@@ -105,7 +105,7 @@
             color: #495057;
         }
 
-        /* 🆕 Estilos para la sección de Comentarios */
+        /* Estilos para la sección de Comentarios */
         .comments-section {
             margin-top: 25px;
             padding-top: 20px;
@@ -124,6 +124,10 @@
             margin-bottom: 10px;
             border-radius: 6px;
             border-left: 3px solid #0d6efd;
+            /* 💡 Sumamos Flexbox para alinear la foto a la izquierda del texto */
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
         }
 
         .comment-user {
@@ -186,6 +190,9 @@
         <div class="user-menu">
             {% if user.is_authenticated %}
                 <span>Hola, <strong>{{ user.username }}</strong>!</span> | 
+                
+                <a href="{% url 'ver_perfil' %}">Mi Perfil</a> | 
+                
                 <a href="{% url 'admin:index' %}">Panel de Control</a> | 
                 
                 <form action="{% url 'logout' %}" method="post" style="display:inline;">
@@ -214,9 +221,24 @@
                     <div class="comments-list">
                         {% for comentario in post.comentarios.all %}
                             <div class="comment-item">
-                                <span class="comment-user">{{ comentario.autor.username }}</span>
-                                <small class="comment-date">• {{ comentario.fecha_publicacion|date:"d/m/Y H:i" }}</small>
-                                <p class="comment-text">{{ comentario.contenido }}</p>
+                                
+                                {% if comentario.autor.perfil and comentario.autor.perfil.foto %}
+                                    <img src="{{ comentario.autor.perfil.foto.url }}" alt="Foto de {{ comentario.autor.username }}" 
+                                         style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #dee2e6; flex-shrink: 0;">
+                                {% else %}
+                                    <div style="width: 40px; height: 40px; background: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0;">
+                                        👤
+                                    </div>
+                                {% endif %}
+
+                                <div style="display: flex; flex-direction: column; width: 100%;">
+                                    <div>
+                                        <span class="comment-user">{{ comentario.autor.username }}</span>
+                                        <small class="comment-date">• {{ comentario.fecha_publicacion|date:"d/m/Y H:i" }}</small>
+                                    </div>
+                                    <p class="comment-text">{{ comentario.contenido }}</p>
+                                </div>
+
                             </div>
                         {% empty %}
                             <p class="no-comments">No hay comentarios en esta publicación. ¡Sé el primero!</p>
@@ -238,7 +260,7 @@
                         </p>
                     {% endif %}
                 </div>
-                </article>
+            </article>
         {% empty %}
             <div class="empty-message">
                 <p>Todavía no hay ninguna publicación armada. ¡Entrá al admin y creá la primera!</p>

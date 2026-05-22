@@ -120,3 +120,11 @@ STATIC_URL = 'static/'
 # Le dice a Django a dónde ir después de iniciar o cerrar sesión
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
+
+import os
+
+# ... (lo que ya tenés de STATIC)
+
+# Configuración para archivos multimedia (Fotos de perfil)
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

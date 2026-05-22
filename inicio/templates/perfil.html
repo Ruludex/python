@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de {{ perfil.user.username }}</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background-color: #f8f9fa;
+        }
+        .profile-card {
+            background: #ffffff;
+            border: 1px solid #dee2e6;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            text-align: center;
+        }
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #0d6efd;
+            margin-bottom: 15px;
+        }
+        h2 { margin: 0 0 5px 0; color: #212529; }
+        .union-date { color: #6c757d; font-size: 0.85rem; margin-bottom: 20px; display: block; }
+        .bio-box {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 4px solid #6c757d;
+            text-align: left;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+        .btn-edit {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #0d6efd;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+            margin-right: 10px;
+        }
+        .btn-edit:hover { background-color: #0b5ed7; }
+        .btn-back {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        .btn-back:hover { background-color: #5a6268; }
+    </style>
+</head>
+<body>
+
+{% if perfil.foto %}
+            <img src="{{ perfil.foto.url }}" alt="Foto de perfil" class="profile-img">
+        {% else %}
+            <div class="profile-img-placeholder" style="width: 150px; height: 150px; background: #ccc; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                👤
+            </div>
+        {% endif %}
+        
+        <h2>{{ perfil.user.username }}</h2>
+        <span class="union-date">Miembro desde el: {{ perfil.fecha_union|date:"d/m/Y" }}</span>
+        
+        <div class="bio-box">
+            <strong>Biografía:</strong>
+            <p style="margin: 5px 0 0 0;">{{ perfil.biografia|default:"Este usuario aún no ha escrito una biografía." }}</p>
+        </div>
+        <a href="{% url 'editar_perfil' %}" class="btn-edit">Editar Perfil</a>
+        <a href="{% url 'inicio' %}" class="btn-back">← Volver al Inicio</a>
+    </div>
+
+</body>
+</html>
+    </div>
